@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('user_id');
-            $table->string('username');
-            $table->string('password');
-            $table->enum('user_type', ['admin', 'siswa', 'bendahara'])->default('siswa');
-            $table->boolean('isDelete');
+        Schema::create('log', function (Blueprint $table) {
+            $table->bigIncrements('log_id');
+            $table->unsignedBigInteger('tranksaksi_id')->nullable();
+            $table->text('isi');
+            $table->boolean('isDelete')->default(0);
             $table->timestamps();
+
+            $table->foreign('transaksi_id')->references('transaksi_id')->on('transaksi');
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('log');
     }
 };
